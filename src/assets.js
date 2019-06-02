@@ -20,4 +20,4 @@ import './images/list.png';
 
 import './index.sass';
 
-import './scripts/script.js';
+import './scripts/main.js';

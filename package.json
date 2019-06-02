@@ -7,7 +7,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "keywords": [],
-  "author": "chengaro",
+  "authors": ["chengaro", "fargelus", "Nastya2019"],
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.2.2",

@@ -8,7 +8,7 @@ const PreloadWebpackPlugin = require('preload-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: './src/assets.js',
   module: {
     rules: [{
         test: /\.txt$/,

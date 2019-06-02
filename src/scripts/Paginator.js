@@ -6,10 +6,31 @@ export default class Paginator {
     this.canSlide = true;
     this.swipeStart = false;
 
+    this.addNavigation();
     this.addScrollListeners();
     this.addTouchListeners();
     this.addKeyListeners();
     this.addClickListeners();
+  }
+
+  addNavigation() {
+    const navContainer = document.querySelector('#navigation');
+    const slidesNav = this.generateSlidesNav();
+
+    navContainer.append(slidesNav);
+  }
+
+  generateSlidesNav() {
+    const slidesNav = document.createElement('ul');
+    slidesNav.classList.add('slides-nav');
+
+    for(let i = 0; i < this.slidesCount; ++i) {
+      const li = document.createElement('li');
+      li.classList.add('slides-nav__item');
+      slidesNav.append(li);
+    }
+
+    return slidesNav;
   }
 
   scrollHandler(evt) {
