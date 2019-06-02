@@ -7,10 +7,6 @@ module.exports = {
     require('cssnano')({
         preset: 'default',
     }),
-    purgecss({
-      content: ['./**/*.html'],
-      keyframes: true
-    }),
     mqpacker({
         sort: sortMediaQueries
     })
