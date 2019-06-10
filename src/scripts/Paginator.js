@@ -6,31 +6,10 @@ export default class Paginator {
     this.canSlide = true;
     this.swipeStart = false;
 
-    this.addNavigation();
     this.addScrollListeners();
     this.addTouchListeners();
     this.addKeyListeners();
     this.addClickListeners();
-  }
-
-  addNavigation() {
-    const navContainer = document.querySelector('#navigation');
-    const slidesNav = this.generateSlidesNav();
-
-    navContainer.append(slidesNav);
-  }
-
-  generateSlidesNav() {
-    const slidesNav = document.createElement('ul');
-    slidesNav.classList.add('slides-nav');
-
-    for(let i = 0; i < this.slidesCount; ++i) {
-      const li = document.createElement('li');
-      li.classList.add('slides-nav__item');
-      slidesNav.append(li);
-    }
-
-    return slidesNav;
   }
 
   scrollHandler(evt) {
@@ -123,10 +102,36 @@ export default class Paginator {
     });
 
     this.activeSlide = newSlide;
+    this.initNavigation();
 
     window.setTimeout(() => {
       this.canSlide = true;
     }, this.duration * 1000);
   }
 
+  initNavigation() {
+    const navContainer = document.querySelector('#navigation');
+    const slidesNav = this.generateSlidesNav();
+
+    const childOl = navContainer.getElementsByTagName('ol');
+    const hasInnerNav = childOl.length;
+    if (hasInnerNav) {
+      childOl[0].remove();
+    }
+    navContainer.append(slidesNav);
+  }
+
+  generateSlidesNav() {
+    const slidesNav = document.createElement('ol');
+    slidesNav.classList.add('slides-nav');
+
+    for(let i = 0; i <= this.activeSlide; ++i) {
+      const li = document.createElement('li');
+      li.classList.add('slides-nav__item');
+      slidesNav.append(li);
+    }
+
+    slidesNav.lastElementChild.classList.add('active');
+    return slidesNav;
+  }
 }

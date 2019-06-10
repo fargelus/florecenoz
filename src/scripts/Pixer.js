@@ -2,14 +2,14 @@ export default class Pixer {
 
   constructor(activeSlide, slidesCount, duration) {
     this.options = [
-      {cx: 0.5, cy: 0.1}, 
-      {cx: 0.9, cy: 0.9}, 
-      {cx: 0.9, cy: 0.5}, 
-      {cx: 0.9, cy: 0.5}, 
-      {cx: 0.9, cy: 0.5}, 
-      {cx: 0.9, cy: 0.5}, 
-      {cx: 0.9, cy: 0.5}, 
-      {cx: 0.7, cy: 0.5}, 
+      {cx: 0.5, cy: 0.1},
+      {cx: 0.9, cy: 0.9},
+      {cx: 0.9, cy: 0.5},
+      {cx: 0.9, cy: 0.5},
+      {cx: 0.9, cy: 0.5},
+      {cx: 0.9, cy: 0.5},
+      {cx: 0.9, cy: 0.5},
+      {cx: 0.7, cy: 0.5},
       {cx: 0.7, cy: 0.5}
     ];
 
@@ -68,12 +68,12 @@ export default class Pixer {
 
       this.isSliding = true;
 
-      tl.to(s1, this.duration, {x: moveTo, onComplete: () => { 
+      tl.to(s1, this.duration, {x: moveTo, onComplete: () => {
           this.stage.removeChild(s1);
           this.isSliding = false;
-        }})  
+        }})
         .to(s2, this.duration, {x: s2.origX}, `-=${this.duration}`);
-    
+
     });
 
   }
@@ -93,9 +93,9 @@ export default class Pixer {
     PIXI.loader.onLoad.add(evt => {
       this.preloaderText.innerHTML = 'LOADING ' + Math.floor(evt.progress) + '%';
     });
-    
+
     PIXI.loader
-    .add('a', './images/0.jpg').add('b', './images/1.jpg').add('c', './images/2.jpg')
+    .add('a', './images/0.jpg').add('b', './images/1.jpg').add('c', './images/2-1.jpg')
     .add('d', './images/2-2.jpg').add('e', './images/2-3.jpg').add('f', './images/2-4.jpg')
     .add('g', './images/2-4.jpg').add('h', './images/3.jpg').add('i', './images/4.jpg')
     .load((loader, resources) => {

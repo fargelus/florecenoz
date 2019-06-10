@@ -4,7 +4,11 @@ import './fonts/ranga-regular.ttf';
 
 import './images/0.jpg';
 import './images/1.jpg';
-import './images/2.jpg';
+import './images/2-1.jpg';
+import './images/2-2.jpg';
+import './images/2-3.jpg';
+import './images/2-4.jpg';
+import './images/2-5.jpg';
 import './images/3.jpg';
 import './images/4.jpg';
 import './images/dots1.png';
