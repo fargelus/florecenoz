@@ -13,11 +13,13 @@
   justify-content: center
 
 .slides-nav
+  counter-reset: inc
+
   &__item
     float: left
-    counter-reset: inc
     position: relative
     left: 25px
+    +square(20px)
 
     &::before, &::after
       color: $white
@@ -25,9 +27,9 @@
       line-height: 1
 
     +pseudo('after')
-      +square(20px)
       counter-increment: inc
       content: counter(inc)
+      +square(100%)
       font-size: 22px
       text-align: center
 
@@ -37,3 +39,11 @@
         font-size: 48px
         left: -50px
         top: -15px
+
+    &:last-child
+      +pseudo('before')
+        width: 100%
+        height: 4px
+        background: $lemon
+        top: auto
+        bottom: -10px

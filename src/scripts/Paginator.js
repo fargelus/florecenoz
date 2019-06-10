@@ -131,7 +131,6 @@ export default class Paginator {
       slidesNav.append(li);
     }
 
-    slidesNav.lastElementChild.classList.add('active');
     return slidesNav;
   }
 }
