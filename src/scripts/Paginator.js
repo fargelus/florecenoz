@@ -7,6 +7,7 @@ export default class Paginator {
     this.swipeStart = false;
 
     this.navContainer;
+    this.slidesNav;
     this.startNavSlide = -1;
 
     this.addScrollListeners();
@@ -76,8 +77,8 @@ export default class Paginator {
     }
 
     this.gotoSlide(direction);
-  }
 
+  }
   addKeyListeners() {
     if (document.addEventListener) {
       document.addEventListener('keydown', this.keyDownHandler.bind(this));
@@ -113,23 +114,26 @@ export default class Paginator {
   }
 
   initNavigation() {
+    this.initNavigationView();
+    this.initNavigationBehavior();
+  }
+
+  initNavigationView() {
     this.navContainer = document.querySelector('#navigation');
-    const slidesNav = this.generateSlidesNav();
+    this.generateSlidesNav();
     this.removePrevSlidesNav();
-    this.navContainer.append(slidesNav);
+    this.navContainer.append(this.slidesNav);
   }
 
   generateSlidesNav() {
-    const slidesNav = document.createElement('ol');
-    slidesNav.classList.add('slides-nav');
+    this.slidesNav = document.createElement('ol');
+    this.slidesNav.classList.add('slides-nav');
 
     this.updateStartNavSlide();
     for(let i = 0; i <= this.startNavSlide; ++i) {
       const li = this.createNavListElement(i);
-      slidesNav.append(li);
+      this.slidesNav.append(li);
     }
-
-    return slidesNav;
   }
 
   updateStartNavSlide() {
@@ -156,5 +160,14 @@ export default class Paginator {
     if (hasInnerNav) {
       prevSlidesNav[0].remove();
     }
+  }
+
+  initNavigationBehavior() {
+    const that = this;
+    this.navContainer.addEventListener('click', (ev) => {
+      const desiredPage = ev.target;
+      const newPage = [...this.slidesNav.children].indexOf(desiredPage);
+      that.gotoSlide(newPage - this.activeSlide);
+    });
   }
 }
