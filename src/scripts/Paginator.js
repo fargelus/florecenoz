@@ -6,6 +6,9 @@ export default class Paginator {
     this.canSlide = true;
     this.swipeStart = false;
 
+    this.navContainer;
+    this.startNavSlide = -1;
+
     this.addScrollListeners();
     this.addTouchListeners();
     this.addKeyListeners();
@@ -110,27 +113,48 @@ export default class Paginator {
   }
 
   initNavigation() {
-    const navContainer = document.querySelector('#navigation');
+    this.navContainer = document.querySelector('#navigation');
     const slidesNav = this.generateSlidesNav();
-
-    const childOl = navContainer.getElementsByTagName('ol');
-    const hasInnerNav = childOl.length;
-    if (hasInnerNav) {
-      childOl[0].remove();
-    }
-    navContainer.append(slidesNav);
+    this.removePrevSlidesNav();
+    this.navContainer.append(slidesNav);
   }
 
   generateSlidesNav() {
     const slidesNav = document.createElement('ol');
     slidesNav.classList.add('slides-nav');
 
-    for(let i = 0; i <= this.activeSlide; ++i) {
-      const li = document.createElement('li');
-      li.classList.add('slides-nav__item');
+    this.updateStartNavSlide();
+    for(let i = 0; i <= this.startNavSlide; ++i) {
+      const li = this.createNavListElement(i);
       slidesNav.append(li);
     }
 
     return slidesNav;
+  }
+
+  updateStartNavSlide() {
+    const isCurrentSlideNumUpper = this.activeSlide > this.startNavSlide;
+    const isCurrentSlideNeedNav = this.activeSlide >= 2;
+    if (isCurrentSlideNeedNav && isCurrentSlideNumUpper) {
+      this.startNavSlide = this.activeSlide;
+    }
+  }
+
+  createNavListElement(num) {
+    const li = document.createElement('li');
+
+    const defaultClass = 'slides-nav__item';
+    const activeClass = num === this.activeSlide ? ' active' : '';
+    li.className = defaultClass + activeClass;
+
+    return li;
+  }
+
+  removePrevSlidesNav() {
+    const prevSlidesNav = this.navContainer.getElementsByClassName('slides-nav');
+    const hasInnerNav = prevSlidesNav.length;
+    if (hasInnerNav) {
+      prevSlidesNav[0].remove();
+    }
   }
 }
