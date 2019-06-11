@@ -164,10 +164,11 @@ export default class Paginator {
 
   initNavigationBehavior() {
     const that = this;
-    this.navContainer.addEventListener('click', (ev) => {
+    this.slidesNav.addEventListener('click', (ev) => {
+      ev.stopPropagation();
       const desiredPage = ev.target;
-      const newPage = [...this.slidesNav.children].indexOf(desiredPage);
-      that.gotoSlide(newPage - this.activeSlide);
+      const slideIndex = [...this.slidesNav.children].indexOf(desiredPage);
+      that.gotoSlide(slideIndex - this.activeSlide);
     });
   }
 }
