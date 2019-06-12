@@ -20,10 +20,10 @@
 
 
 // font-family
-=font($alias, $name)
+=font($alias, $name, $format)
   @font-face
-    font-family: lora
-    src: url("./fonts/lora-regular.ttf") format('truetype')
+    font-family: $alias
+    src: url("./fonts/" + $name) format($format)
 
     font-weight: normal
     font-style: normal

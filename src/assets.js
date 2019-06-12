@@ -1,6 +1,3 @@
-import './fonts/ropasans-regular.woff';
-import './fonts/ropasans-regular.woff2';
-import './fonts/ranga-regular.ttf';
 
 import './images/0.jpg';
 import './images/1.jpg';
