@@ -6,9 +6,10 @@ export default class Paginator {
     this.canSlide = true;
     this.swipeStart = false;
 
-    this.navContainer;
-    this.slidesNav;
-    this.startNavSlide = -1;
+    this.navContainer = document.querySelector('#navigation');
+    this.slidesNav = this.navContainer.querySelector('.slides-nav');
+    this.lastGeneratedNavItem = -1;
+    this.initNavigation();
 
     this.addScrollListeners();
     this.addTouchListeners();
@@ -77,8 +78,8 @@ export default class Paginator {
     }
 
     this.gotoSlide(direction);
-
   }
+
   addKeyListeners() {
     if (document.addEventListener) {
       document.addEventListener('keydown', this.keyDownHandler.bind(this));
@@ -106,7 +107,7 @@ export default class Paginator {
     });
 
     this.activeSlide = newSlide;
-    this.initNavigation();
+    this.updateNavigation();
 
     window.setTimeout(() => {
       this.canSlide = true;
@@ -114,55 +115,52 @@ export default class Paginator {
   }
 
   initNavigation() {
-    this.initNavigationView();
-    this.initNavigationBehavior();
+    this.createNavItem();
+    this.setActiveNavItem();
   }
 
-  initNavigationView() {
-    this.navContainer = document.querySelector('#navigation');
-    this.generateSlidesNav();
-    this.removePrevSlidesNav();
-    this.navContainer.append(this.slidesNav);
+  createNavItem() {
+    const navItem = this.generateOneSlideNavItem();
+
+    this.slidesNav.append(navItem);
+    this.lastGeneratedNavItem = this.activeSlide;
   }
 
-  generateSlidesNav() {
-    this.slidesNav = document.createElement('ol');
-    this.slidesNav.classList.add('slides-nav');
-
-    this.updateStartNavSlide();
-    for(let i = 0; i <= this.startNavSlide; ++i) {
-      const li = this.createNavListElement(i);
-      this.slidesNav.append(li);
-    }
-  }
-
-  updateStartNavSlide() {
-    const isCurrentSlideNumUpper = this.activeSlide > this.startNavSlide;
-    const isCurrentSlideNeedNav = this.activeSlide >= 2;
-    if (isCurrentSlideNeedNav && isCurrentSlideNumUpper) {
-      this.startNavSlide = this.activeSlide;
-    }
+  generateOneSlideNavItem() {
+    return this.createNavListElement();
   }
 
   createNavListElement(num) {
     const li = document.createElement('li');
 
-    const defaultClass = 'slides-nav__item';
-    const activeClass = num === this.activeSlide ? ' active' : '';
-    li.className = defaultClass + activeClass;
+    li.className = 'slides-nav__item';
+    li.innerHTML = this.activeSlide + 1;
 
     return li;
   }
 
-  removePrevSlidesNav() {
-    const prevSlidesNav = this.navContainer.getElementsByClassName('slides-nav');
-    const hasInnerNav = prevSlidesNav.length;
-    if (hasInnerNav) {
-      prevSlidesNav[0].remove();
+  setActiveNavItem() {
+    const prevSlide = this.slidesNav.querySelector('.active');
+    const navItems = this.slidesNav.children;
+    if (prevSlide) {
+      prevSlide.classList.remove('active');
     }
+    navItems[this.activeSlide].classList.add('active');
   }
 
-  initNavigationBehavior() {
+  updateNavigation() {
+    this.updateNavigationView();
+    this.updateNavigationBehavior();
+  }
+
+  updateNavigationView() {
+    if (this.lastGeneratedNavItem < this.activeSlide) {
+      this.createNavItem();
+    }
+    this.setActiveNavItem();
+  }
+
+  updateNavigationBehavior() {
     const that = this;
     this.slidesNav.addEventListener('click', (ev) => {
       ev.stopPropagation();

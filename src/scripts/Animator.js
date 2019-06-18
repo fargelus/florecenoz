@@ -15,13 +15,12 @@ export default class Animator {
     this.activeSlide = activeSlide;
     this.duration = duration;
 
-    this.indexEl = document.querySelector('.index');
     this.headerEl = document.querySelector('.header');
 
     this.strip1 = document.querySelector('.strip-1');
     this.stripOver1 = document.querySelector('.js-strip-1');
-
     window.addEventListener('resize', this.resizeHandler.bind(this));
+
 
     this.isMixSupported = (window.getComputedStyle(document.body).mixBlendMode !== undefined);
 
@@ -40,7 +39,6 @@ export default class Animator {
 
     PubSub.subscribe('begin', (msg, data)  => {
       let firstSlide = document.querySelector(`[data-slide="${data.index}"]`);
-      this.indexEl.innerHTML = `0${data.index + 1}`;
       let tl = new TimelineMax();
 
       tl.set('.preloader', {display: 'none'})
@@ -55,9 +53,7 @@ export default class Animator {
         .set(`.mask-${data.index}`, {
           display: 'block',
           opacity: this.isMixSupported ? 1 : 0.5
-        })
-        .set(this.indexEl, {opacity: 0.1});
-
+        });
     });
 
 
@@ -80,8 +76,7 @@ export default class Animator {
           .to(currSection, this.duration / 2, {
                 opacity: 0,
                 y: -100 * direction,
-                filter: 'blur(10px)',
-                onComplete: () => {this.indexEl.innerHTML = `0${data.to + 1}`}
+                filter: 'blur(10px)'
               })
 
           .set(currSection, {filter: 'none', zIndex: 0})
@@ -100,7 +95,7 @@ export default class Animator {
         tl.staggerTo(
             [currSection, currMask],
             this.duration / 2,
-            {opacity: 0, onComplete: () => {this.indexEl.innerHTML = `0${data.to + 1}`}})
+            {opacity: 0 })
 
           .set(currSection, {zIndex: 0})
           .set(currMask, {display: 'none'})
