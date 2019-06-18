@@ -141,11 +141,19 @@ export default class Paginator {
 
   setActiveNavItem() {
     const prevSlide = this.slidesNav.querySelector('.active');
-    const navItems = this.slidesNav.children;
     if (prevSlide) {
       prevSlide.classList.remove('active');
     }
+    this.blinkSlideNav();
+    const navItems = this.slidesNav.children;
     navItems[this.activeSlide].classList.add('active');
+  }
+
+  blinkSlideNav() {
+    this.slidesNav.style.opacity = 0;
+    setTimeout(() => {
+      this.slidesNav.style.opacity = 1;
+    }, 10);
   }
 
   updateNavigation() {
