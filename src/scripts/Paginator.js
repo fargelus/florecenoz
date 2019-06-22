@@ -7,6 +7,8 @@ export default class Paginator {
     this.swipeStart = false;
 
     this.navContainer = document.querySelector('#navigation');
+    this.backNavBtn = this.navContainer.querySelector('#back-nav');
+    this.forwardNavBtn = this.navContainer.querySelector('#forward-nav');
     this.slidesNav = this.navContainer.querySelector('.slides-nav');
     this.lastGeneratedNavItem = -1;
     this.initNavigation();
@@ -107,7 +109,7 @@ export default class Paginator {
     });
 
     this.activeSlide = newSlide;
-    this.updateNavigation();
+    this.updateNavigationView();
 
     window.setTimeout(() => {
       this.canSlide = true;
@@ -115,8 +117,20 @@ export default class Paginator {
   }
 
   initNavigation() {
+    this.initNavigationBehavior();
     this.createNavItem();
     this.setActiveNavItem();
+    this.defineNavArrowsClickHandler();
+  }
+
+  initNavigationBehavior() {
+    const that = this;
+    this.slidesNav.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const desiredPage = ev.target;
+      const slideIndex = [...this.slidesNav.children].indexOf(desiredPage);
+      that.gotoSlide(slideIndex - this.activeSlide);
+    });
   }
 
   createNavItem() {
@@ -156,25 +170,44 @@ export default class Paginator {
     }, 10);
   }
 
-  updateNavigation() {
-    this.updateNavigationView();
-    this.updateNavigationBehavior();
+  defineNavArrowsClickHandler() {
+    this.forwardNavBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.gotoSlide(1);
+    });
+
+    this.backNavBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.gotoSlide(-1);
+    });
   }
 
   updateNavigationView() {
     if (this.lastGeneratedNavItem < this.activeSlide) {
       this.createNavItem();
     }
+    this.toggleNavArrows();
     this.setActiveNavItem();
   }
 
-  updateNavigationBehavior() {
-    const that = this;
-    this.slidesNav.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      const desiredPage = ev.target;
-      const slideIndex = [...this.slidesNav.children].indexOf(desiredPage);
-      that.gotoSlide(slideIndex - this.activeSlide);
-    });
+  toggleNavArrows() {
+    this.toggleNavBackArrow();
+    this.toggleNavForwardArrow();
+  }
+
+  toggleNavBackArrow() {
+    if (this.activeSlide > 0) {
+      this.backNavBtn.removeAttribute('hidden');
+    } else {
+      this.backNavBtn.setAttribute('hidden', true);
+    }
+  }
+
+  toggleNavForwardArrow() {
+    if (this.activeSlide < this.slidesCount - 1) {
+      this.forwardNavBtn.removeAttribute('hidden');
+    } else {
+      this.forwardNavBtn.setAttribute('hidden', true);
+    }
   }
 }
