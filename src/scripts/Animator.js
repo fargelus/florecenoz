@@ -13,6 +13,7 @@ export default class Animator {
     ];
 
     this.activeSlide = activeSlide;
+    this.slidesCount = this.options.length;
     this.duration = duration;
 
     this.headerEl = document.querySelector('.header');
@@ -38,9 +39,11 @@ export default class Animator {
   run() {
 
     PubSub.subscribe('begin', (msg, data)  => {
-      let firstSlide = document.querySelector(`[data-slide="${data.index}"]`);
+      const { index } = data;
+      let firstSlide = document.querySelector(`[data-slide="${index}"]`);
       let tl = new TimelineMax();
 
+      const mask = document.querySelector(`.mask-${index}`);
       tl.set('.preloader', {display: 'none'})
 
         .fromTo(firstSlide, 0.7, {y: 50}, {opacity: 1, y: 0, onComplete: () => {
@@ -50,9 +53,13 @@ export default class Animator {
         .set(firstSlide, {zIndex: 1})
         .set('.header', {opacity: 1})
         .set('.footer', {opacity: 1})
-        .set(`.mask-${data.index}`, {
+        .set(mask, {
           display: 'block',
-          opacity: this.isMixSupported ? 1 : 0.5
+          opacity: this.isMixSupported ? 1 : 0.5,
+          onComplete: () => {
+            const classToAdd = index === this.slidesCount - 1 ? ' final' : '';
+            mask.className += classToAdd;
+          }
         });
     });
 

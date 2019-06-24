@@ -1,0 +1,14 @@
+@import "../utils/variables"
+@import "../utils/mixins"
+
+.link
+  color: $white
+  text-decoration: none
+  @include pseudo('after')
+    top: 95%
+    width: 100%
+    background: $white
+    height: 1px
+
+  &:hover::after
+    background: transparent
