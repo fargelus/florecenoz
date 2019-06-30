@@ -56,20 +56,20 @@ export default class Animator {
         .set(mask, {
           display: 'block',
           opacity: this.isMixSupported ? 1 : 0.5,
-          onComplete: () => {
-            const classToAdd = index === this.slidesCount - 1 ? ' final' : '';
-            mask.className += classToAdd;
-          }
         });
     });
 
 
 
     PubSub.subscribe('gotoSlide', (msg, data) => {
-      let currSection = document.querySelector(`[data-slide="${data.from}"]`);
-      let currMask = document.querySelector(`.mask-${data.from}`);
-      let nextSection = document.querySelector(`[data-slide="${data.to}"]`);
-      let nextMask = document.querySelector(`.mask-${data.to}`);
+      const { from, to } = data;
+      let currSection = document.querySelector(`[data-slide="${from}"]`);
+      let currMask = document.querySelector(`.mask-${from}`);
+      let nextSection = document.querySelector(`[data-slide="${to}"]`);
+      let nextMask = document.querySelector(`.mask-${to}`);
+
+      const classToAdd = to === this.slidesCount - 1 ? ' final' : '';
+      nextMask.className += classToAdd;
 
       this.activeSlide = data.to;
 

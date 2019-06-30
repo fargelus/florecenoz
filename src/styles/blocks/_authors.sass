@@ -1,0 +1,21 @@
+.authors
+  position: relative
+  &__address
+    margin-top: 15px
+
+  address
+    font-style: normal
+    display: none
+
+  &:before
+    position: absolute
+    top: 0
+    left: -46px
+    content: ''
+    width: 36px
+    height: 36px
+    background: url('./images/sprite.svg#icon-university') no-repeat 0 0
+    +r(767)
+      left: -38px
+      width: 30px
+      height: 30px
