@@ -7,11 +7,8 @@ export default class Paginator {
     this.swipeStart = false;
 
     this.navContainer = document.querySelector('#navigation');
-    this.backNavBtn = this.navContainer.querySelector('#back-nav');
-    this.forwardNavBtn = this.navContainer.querySelector('#forward-nav');
-    this.slidesNav = this.navContainer.querySelector('.slides-nav');
-    this.lastGeneratedNavItem = -1;
-    this.initNavigation();
+    this.currentNavStep = this.navContainer.querySelector('#current-step');
+    this.navTrack = this.navContainer.querySelector('#track');
 
     this.addScrollListeners();
     this.addTouchListeners();
@@ -116,98 +113,10 @@ export default class Paginator {
     }, this.duration * 1000);
   }
 
-  initNavigation() {
-    this.initNavigationBehavior();
-    this.createNavItem();
-    this.setActiveNavItem();
-    this.defineNavArrowsClickHandler();
-  }
-
-  initNavigationBehavior() {
-    const that = this;
-    this.slidesNav.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      const desiredPage = ev.target;
-      const slideIndex = [...this.slidesNav.children].indexOf(desiredPage);
-      that.gotoSlide(slideIndex - this.activeSlide);
-    });
-  }
-
-  createNavItem() {
-    const navItem = this.generateOneSlideNavItem();
-
-    this.slidesNav.append(navItem);
-    this.lastGeneratedNavItem = this.activeSlide;
-  }
-
-  generateOneSlideNavItem() {
-    return this.createNavListElement();
-  }
-
-  createNavListElement(num) {
-    const li = document.createElement('li');
-
-    li.className = 'slides-nav__item';
-    li.innerHTML = this.activeSlide + 1;
-
-    return li;
-  }
-
-  setActiveNavItem() {
-    const prevSlide = this.slidesNav.querySelector('.active');
-    if (prevSlide) {
-      prevSlide.classList.remove('active');
-    }
-    this.blinkSlideNav();
-    const navItems = this.slidesNav.children;
-    navItems[this.activeSlide].classList.add('active');
-  }
-
-  blinkSlideNav() {
-    this.slidesNav.style.opacity = 0;
-    setTimeout(() => {
-      this.slidesNav.style.opacity = 1;
-    }, 10);
-  }
-
-  defineNavArrowsClickHandler() {
-    this.forwardNavBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.gotoSlide(1);
-    });
-
-    this.backNavBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.gotoSlide(-1);
-    });
-  }
-
   updateNavigationView() {
-    if (this.lastGeneratedNavItem < this.activeSlide) {
-      this.createNavItem();
-    }
-    this.toggleNavArrows();
-    this.setActiveNavItem();
-  }
-
-  toggleNavArrows() {
-    this.toggleNavBackArrow();
-    this.toggleNavForwardArrow();
-  }
-
-  toggleNavBackArrow() {
-    if (this.activeSlide > 0) {
-      this.backNavBtn.removeAttribute('hidden');
-    } else {
-      this.backNavBtn.setAttribute('hidden', true);
-    }
-  }
-
-  toggleNavForwardArrow() {
-    if (this.activeSlide < this.slidesCount - 1) {
-      this.forwardNavBtn.removeAttribute('hidden');
-    } else {
-      this.forwardNavBtn.setAttribute('hidden', true);
-    }
+    const updateSlide = +this.activeSlide + 1;
+    this.currentNavStep.innerHTML = updateSlide;
+    const passedTrack = (updateSlide / this.slidesCount).toFixed(2) * 100;
+    this.navTrack.style.width = `${passedTrack}%`;
   }
 }

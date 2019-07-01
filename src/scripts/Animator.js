@@ -17,11 +17,11 @@ export default class Animator {
     this.duration = duration;
 
     this.headerEl = document.querySelector('.header');
-
+    this.endMask = document.querySelector(`.mask-${this.slidesCount - 1}`);
     this.strip1 = document.querySelector('.strip-1');
     this.stripOver1 = document.querySelector('.js-strip-1');
-    window.addEventListener('resize', this.resizeHandler.bind(this));
 
+    window.addEventListener('resize', this.resizeHandler.bind(this));
 
     this.isMixSupported = (window.getComputedStyle(document.body).mixBlendMode !== undefined);
 
@@ -68,8 +68,7 @@ export default class Animator {
       let nextSection = document.querySelector(`[data-slide="${to}"]`);
       let nextMask = document.querySelector(`.mask-${to}`);
 
-      const classToAdd = to === this.slidesCount - 1 ? ' final' : '';
-      nextMask.className += classToAdd;
+      this.toggleEndMaskFinalClass(to);
 
       this.activeSlide = data.to;
 
@@ -126,4 +125,12 @@ export default class Animator {
     });
   }
 
+  toggleEndMaskFinalClass(to) {
+    const notFinalSlide = to !== this.slidesCount - 1;
+    if (notFinalSlide) {
+      this.endMask.classList.remove('final');
+    } else {
+      this.endMask.classList.add('final');
+    }
+  }
 }
