@@ -7,5 +7,32 @@
     .navigation
       display: none
 
-.mask.full-width
+.mask--bg
   width: 100%
+
+  .shadow
+    width: 100%
+    height: 100%
+    position: absolute
+    z-index: 0
+    left: 0
+    top: 0
+    background: rgba(22, 22, 22, 0.5)
+
+  .bg-image-wrapper
+    height: 100%
+    width: 100%
+    position: absolute
+    z-index: -1
+    left: 0
+    top: 0
+    display: flex
+
+  .bg-image
+    flex: 1 1 auto
+    position: relative
+
+  @for $i from 1 through 4
+    .bg-image--#{$i}
+      background: url('./images/beautiful-#{$i}.png') no-repeat center top
+      background-size: cover

@@ -97,7 +97,7 @@ export default class Pixer {
     PIXI.loader
     .add('a', './images/0.jpg').add('b', './images/1.jpg').add('c', './images/2-1.jpg')
     .add('d', './images/2-2.jpg').add('e', './images/2-3.jpg').add('f', './images/2-4.jpg')
-    .add('g', './images/2-4.jpg').add('h', './images/3.jpg').add('i', './images/4.jpg')
+    .add('g', './images/2-4.jpg').add('h', './images/3.jpg').add('i', '')
     .load((loader, resources) => {
 
       for (let key in resources) {
