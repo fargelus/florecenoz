@@ -114,9 +114,11 @@ export default class Paginator {
   }
 
   updateNavigationView() {
-    const updateSlide = +this.activeSlide + 1;
+    const updateSlide = this.activeSlide + 1;
     this.currentNavStep.innerHTML = updateSlide;
-    const passedTrack = (updateSlide / this.slidesCount).toFixed(2) * 100;
+
+    const lastSlide = this.slidesCount - 1;
+    const passedTrack = (this.activeSlide / lastSlide).toFixed(2) * 100;
     this.navTrack.style.width = `${passedTrack}%`;
   }
 }
